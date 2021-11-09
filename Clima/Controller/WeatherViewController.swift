@@ -8,17 +8,68 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: UIViewController, UITextFieldDelegate {
 
+//IB Outlets
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var searchButton: UIButton!
     
+//Variables
+    var appModel = AppModel()
+    
+//Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        searchTextField.delegate = self
     }
 
-
+//IB Actions
+    @IBAction func searchPressed(_ sender: UIButton) {
+        print("on searchPressed")
+        let city = searchTextField.text ?? ""
+        if city != "" {
+            appModel.setCity(city: city)
+            appModel.debug()
+            hideKeyboard()
+        }else{
+            //Nothing to search
+        }
+    }
+    
+    //Delegate Functions
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("on textfieldShouldReturn")
+        var output = false;
+        if (searchTextField.text ?? "") != "" {
+            searchPressed(searchButton)
+            output = true
+        }
+        print(output)
+        return output
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("on textFieldShouldEndEditing")
+        if searchTextField.text == "" {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print("on textFieldDidEndEditing")
+        searchTextField.text = ""
+    }
+    
+    //Functions
+    func hideKeyboard(){
+        print("on hideKeyboard")
+        searchTextField.endEditing(true)
+    }
+    
 }
-
