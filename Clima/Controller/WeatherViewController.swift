@@ -19,6 +19,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
 //Variables
     var appModel = AppModel()
+    var weatherRequester = WeatherRequester()
     
 //Overrides
     override func viewDidLoad() {
@@ -34,6 +35,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
             appModel.setCity(city: city)
             appModel.debug()
             hideKeyboard()
+            weatherRequester.fetchWeather(cityName: appModel.getCity())
         }else{
             //Nothing to search
         }
