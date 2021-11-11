@@ -19,11 +19,26 @@ struct WeatherRequester {
     func performRequest(urlString: String){
         //1.- createURL
         if let url = URL(string: urlString){
+            
             //2.- create URL session
             let session = URLSession(configuration: .default)
             
-            //3.- create a task
-            let task = session.dataTask(with: url, completionHandler: handle(data: response: error:))
+            //3.- give the session a task (with trailing clousure)
+            
+            //Giving function name as handler
+            //let task = session.dataTask(with: url, completionHandler: handle(data: response: error:))
+            
+            //with trailing clousure format as handler
+            let task = session.dataTask(with: url) { (data, response, error) in
+                if error != nil{
+                    print(error!)
+                    return
+                }
+                
+                if let safeData = data {
+                    self.parseJSON(weatherData: safeData)
+                }
+            }
             
             //4.- Start the task
             task.resume()
@@ -39,7 +54,17 @@ struct WeatherRequester {
         
         if let safeData = data {
             let dataAsString = String(data: safeData, encoding: .utf8)
-            print(dataAsString)
+            print(dataAsString!)
+        }
+    }
+    
+    func parseJSON(weatherData: Data){
+        let decoder = JSONDecoder()
+        do {
+            let decodedData = try  decoder.decode(WeatherData.self, from: weatherData)
+            print(decodedData)
+        } catch {
+            print(error)
         }
     }
     
