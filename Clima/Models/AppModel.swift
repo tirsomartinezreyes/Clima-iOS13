@@ -24,4 +24,23 @@ struct AppModel{
         print("city:\(city)")
         print("- - - - - - - - - - - - - - - \n")
     }
+    
+    func getConditionIcon(_ weatherId:Int)->String{
+        var output = ""
+        switch weatherId {
+            case 200...299: output = "cloud.bolt"
+            case 300...399: output = "cloud.drizzle"
+            case 500...599: output = "cloud.rain"
+            case 600...699: output = "cloud.snow"
+            case 700...799: output = "cloud.fog"
+            case 800: output = "sun.max"
+            case 801...899: output = "cloud.bolt"
+            default : output = "cloud"
+        }
+        return output
+    }
+    
+    func getConditionRemoteIcon(_ weatherIcon:String)->String{
+        return "http://openweathermap.org/img/wn/\(weatherIcon)@2x.png"
+    }
 }
