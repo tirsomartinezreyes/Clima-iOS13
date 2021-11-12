@@ -10,7 +10,7 @@ import Foundation
 
 struct AppModel{
     var city:String = ""
-    
+        
     mutating func setCity(city:String){
         self.city = city
     }

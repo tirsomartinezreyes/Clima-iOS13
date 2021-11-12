@@ -37,6 +37,7 @@ struct WeatherRequester {
                 
                 if let safeData = data {
                     self.parseJSON(weatherData: safeData)
+                    print()
                 }
             }
             
@@ -62,10 +63,24 @@ struct WeatherRequester {
         let decoder = JSONDecoder()
         do {
             let decodedData = try  decoder.decode(WeatherData.self, from: weatherData)
+            let icon = getConditionIcon(decodedData.weather[0].id)
             print(decodedData)
+            print(icon)
         } catch {
             print(error)
         }
     }
     
+    func getConditionIcon(_ weatherId:Int)->String{
+        var output = ""
+        switch weatherId {
+            case 200...299: output = "X"
+            default : output = "clouds"
+        }
+        return output
+    }
+    
+    func getConditionRemoteIcon(_ weatherIcon:String)->String{
+        return "http://openweathermap.org/img/wn/\(weatherIcon)@2x.png"
+    }
 }
