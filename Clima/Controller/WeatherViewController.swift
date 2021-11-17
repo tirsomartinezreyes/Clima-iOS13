@@ -18,7 +18,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var searchButton: UIButton!
     
 //Variables
-    var appModel = AppModel()
+    var appModel = AppModel.shared
     var weatherRequester = WeatherRequester()
     
 //Overrides

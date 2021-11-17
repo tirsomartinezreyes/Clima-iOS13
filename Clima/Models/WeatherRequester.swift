@@ -36,8 +36,9 @@ struct WeatherRequester {
                 }
                 
                 if let safeData = data {
-                    self.parseJSON(weatherData: safeData)
-                    print()
+                    parseJSON(weatherData: safeData)
+                    
+                    print("JOSN parse Done")
                 }
             }
             
@@ -63,9 +64,12 @@ struct WeatherRequester {
         let decoder = JSONDecoder()
         do {
             let decodedData = try  decoder.decode(WeatherData.self, from: weatherData)
-            let icon = AppModel().getConditionIcon(decodedData.weather[0].id)
-            print(decodedData)
+            let icon = AppModel.shared.getConditionIcon(decodedData.weather[0].id)
+            AppModel.shared.setTemperature(decodedData.main.temp)
+            AppModel.shared.setResponse(response: decodedData)
+            print(AppModel.shared.getResponse()!)
             print(icon)
+            print(AppModel.shared.temperatureAsString)
         } catch {
             print(error)
         }

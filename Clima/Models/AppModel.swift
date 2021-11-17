@@ -8,15 +8,49 @@
 
 import Foundation
 
-struct AppModel{
+class AppModel {
+    
+    static var shared: AppModel = {
+        let instance = AppModel()
+        return instance
+    }()
+    
+    private init() { }
+    
     var city:String = ""
-        
-    mutating func setCity(city:String){
+    var temperature: Double = 0.0
+    var response:WeatherData? = nil
+    
+    var temperatureAsString: String {
+        return String(format:"%.1f",temperature)
+    }
+    
+    func setResponse(response:WeatherData){
+        self.response = response
+    }
+    
+    func getResponse()->WeatherData? {
+        if(response != nil){
+            return response
+        }else{
+         return nil
+        }
+    }
+    
+    func setCity(city:String){
         self.city = city
     }
     
     func getCity()->String{
         return city
+    }
+    
+    func setTemperature(_ temperature:Double){
+        self.temperature = temperature
+    }
+    
+    func getTemperature()->Double{
+        return temperature
     }
     
     func debug(){
@@ -26,6 +60,7 @@ struct AppModel{
     }
     
     func getConditionIcon(_ weatherId:Int)->String{
+        //Based on https://openweathermap.org/weather-conditions
         var output = ""
         switch weatherId {
             case 200...299: output = "cloud.bolt"
@@ -42,5 +77,11 @@ struct AppModel{
     
     func getConditionRemoteIcon(_ weatherIcon:String)->String{
         return "http://openweathermap.org/img/wn/\(weatherIcon)@2x.png"
+    }
+}
+
+extension AppModel: NSCopying {
+    func copy(with zone: NSZone? = nil) -> Any{
+        return self
     }
 }
