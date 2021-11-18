@@ -21,12 +21,22 @@ class AppModel {
     var temperature: Double = 0.0
     var response:WeatherData? = nil
     
+    
     var temperatureAsString: String {
         return String(format:"%.1f",temperature)
     }
     
-    func setResponse(response:WeatherData){
-        self.response = response
+    func setResponse(response:WeatherData?){
+        if response != nil {
+            self.response = response
+            let icon = AppModel.shared.getConditionIcon(response!.weather[0].id)
+            AppModel.shared.setTemperature(response!.main.temp)
+            print(AppModel.shared.getResponse()!)
+            print(icon)
+            print(AppModel.shared.temperatureAsString)
+        }else{
+            
+        }
     }
     
     func getResponse()->WeatherData? {
